@@ -8,6 +8,7 @@ const port = process.env.PORT || 3000;
 const CertifiedUsers = require('./src/models/certifiedUsers');
 
 const bodyparser = require('body-parser');
+const { mailer } = require('./mailer');
 const data = {
     "Intern Name": "Deependra Singh",
     "Start Date": new Date(),
@@ -18,6 +19,7 @@ const data = {
 };
 
 app.use(bodyparser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
 app.use(cors());
 app.get('/certificate/:cid', async (req, res) => {
     const CID = req.params.cid;
@@ -43,6 +45,18 @@ app.get('/certificate/:cid', async (req, res) => {
     // } catch (e) {
     //     console.error(e);
     // }
+});
+
+app.post('/sendmessage', (req, res) => {
+    const contactDetails = req.body;
+    try {
+        mailer(contactDetails);
+        console.log("Mail Sent Successful.");
+        res.send({ status: true });
+    } catch (e) {
+        res.send({status:false,error:e});
+        console.error(e);
+    }
 });
 
 mongoose.connect('mongodb+srv://EvolveIntern:EvolveIntern01623@cluster0.pfih4bu.mongodb.net/Evolve?retryWrites=true&w=majority').then(() => {
