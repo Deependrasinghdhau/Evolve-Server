@@ -50,7 +50,7 @@ app.get('/certificate/:cid', async (req, res) => {
 app.post('/sendmessage', (req, res) => {
     const contactDetails = req.body;
     try {
-        mailer(contactDetails);
+        mailer(contactDetails).catch(console.error);
         console.log("Mail Sent Successful.");
         res.send({ status: true });
     } catch (e) {
