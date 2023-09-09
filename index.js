@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 const CertifiedUsers = require('./src/models/certifiedUsers');
 
 const bodyparser = require('body-parser');
-const { mailer } = require('./mailer');
+const { sendMail } = require('./mailer');
 const data = {
     "Intern Name": "Deependra Singh",
     "Start Date": new Date(),
@@ -48,15 +48,8 @@ app.get('/certificate/:cid', async (req, res) => {
 });
 
 app.post('/sendmessage', (req, res) => {
-    const contactDetails = req.body;
-    try {
-        mailer(contactDetails).catch(console.error);
-        console.log("Mail Sent Successful.");
-        res.send({ status: true });
-    } catch (e) {
-        res.send({status:false,error:e});
-        console.error(e);
-    }
+    sendMail(req, res);
+    console.log(req.body);
 });
 
 mongoose.connect('mongodb+srv://EvolveIntern:EvolveIntern01623@cluster0.pfih4bu.mongodb.net/Evolve?retryWrites=true&w=majority').then(() => {
