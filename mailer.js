@@ -8,6 +8,7 @@ async function mailer(contactDetails) {
       user: 'evolveintern.info@gmail.com', // generated ethereal user
       pass: 'fjxpsxbtbnukyilf', // generated ethereal password
     },
+    secure: true,
   });
 
   // send mail with defined transport object
